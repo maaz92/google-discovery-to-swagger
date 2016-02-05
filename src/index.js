@@ -302,7 +302,7 @@ function processParameterList(method) {
   });
 
   //When process all parameters that doesn't have order
-  _(parameters).omit(paramOrder).each(function (param, name) {
+  _.each(_.omit(parameters, paramOrder), function (param, name) {
     if (parameters.hasOwnProperty(name)) {
       var srParam = processParameter(name, param);
       srParameters.push(srParam);
