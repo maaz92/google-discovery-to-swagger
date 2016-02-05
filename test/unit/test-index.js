@@ -12,8 +12,34 @@ describe('discover2swagger', function() {
 
 	it('a simple GDD should be converted', function() {
 	  var swag = converter.convert(mkGdd());
-	  expect(swag.paths['/resource']).to.exist;
-	  swag;
+	  expect(swag.paths).to.have.property('/resources-path');
+	  expect(swag.paths['/resources-path']).to.eql({
+		get: {
+		  operationId: "resource.list",
+		  parameters: [
+			{
+			  name: "p1",
+			  in: "query",
+			  type: "string"
+		    },
+			{
+			  name: "p2",
+			  in: "path",
+			  type: "string"
+		    }
+		  ],
+		  responses: {
+			"200": {
+			  description: "Successful response",
+			  schema: {
+				$ref: "#/definitions/#schemas/ResourceList"
+			  }
+			},
+		  },
+		  tags: [ "resource" ]
+		},
+		parameters: []
+	  });
 	});
 
   });
@@ -67,7 +93,7 @@ function mkGdd() {
 		  methods: {
 			list: {
 			  id: "resource.list",
-			  path: "resource",
+			  path: "resources-path",
 			  httpMethod: "GET",
 			  parameters: {
 				p1: {
@@ -76,7 +102,7 @@ function mkGdd() {
 				},
 				p2: {
 				  type: "string",
-				  location: "query"
+				  location: "path"
 				}
 			  },
 			  response: {
