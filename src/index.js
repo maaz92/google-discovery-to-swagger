@@ -138,11 +138,11 @@ function processDefinitions(schemas) {
   jp.apply(schemas, '$..*.maximum' , convertInt);
 
   _.each(schemas, function (schema) {
-    if (!('properties' in schema))
+    if (!schema || !('properties' in schema))
       return;
 
     _.each(schema.properties, function (property) {
-      if ('default' in property) {
+      if (property && ('default' in property)) {
         property.default = processDefault(property);
       }
     });
@@ -154,7 +154,7 @@ function processDefinitions(schemas) {
 function processResource(data, srGlobalRefParameters) {
   var srPaths = processMethodList(data);
 
-  if ('resources' in data) {
+  if (data && ('resources' in data)) {
     _.each(data.resources, function (subResource, name) {
       var srSubPaths = processSubResource(data.resources[name]);
 
@@ -177,7 +177,7 @@ function processResource(data, srGlobalRefParameters) {
 }
 
 function processMethodList(data) {
-  if (!('methods' in data))
+  if (!data || !('methods' in data))
     return {};
 
   var srPaths = {};
@@ -198,7 +198,7 @@ function processMethodList(data) {
 function processSubResource(data) {
   var srPaths = processMethodList(data);
 
-  if (!('resources' in data))
+  if (!data || !('resources' in data))
     return srPaths;
 
   _.each(data.resources, function (resource, name) {
