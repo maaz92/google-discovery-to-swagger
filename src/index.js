@@ -353,7 +353,7 @@ function processType(type) {
 
 
 function processDefault(param) {
-  if (!('default' in param))
+  if (!param || !('default' in param))
     return undefined;
 
   assert(_.isString(param.default));
